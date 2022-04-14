@@ -51,7 +51,7 @@ class App extends React.Component {
           <input
             id="new-player"
           />
-          <button onClick={this.callApi}>
+          <button onClick={this.handleSubmit}>
             Add Opponent
           </button>
           </div>
