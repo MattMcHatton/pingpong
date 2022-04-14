@@ -24,4 +24,4 @@ yarn-error.log*
 
 src/config/*
 
-package-lock.json
+./package-lock.json
