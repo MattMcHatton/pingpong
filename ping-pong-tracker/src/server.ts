@@ -1,18 +1,20 @@
 const express = require('express');
 const database = require('./util/dbConnect.js')
-const config = require('./config/config.js')
+const queryBuilder = require('./util/queryBuilder.js')
+const config = require('./config/config.js');
+
 
 const app = express();
 const port = process.env.PORT || 5000;
+const query = new queryBuilder();
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
 app.get('/user', async (req, res) => {
-  res.send({body: "Hello World!"})
-  console.log('Calling GET')
 
   var db = new database(config)
-  db.sendRequest('select * from players');
+  var query = new queryBuilder()
+  db.sendRequest(query.getUsers('matt.mchatton@dialexa.com'));
 
 });
 

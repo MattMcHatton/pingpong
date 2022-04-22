@@ -1,6 +1,9 @@
 var mssql = require('mssql');
 
 class dbConnect {
+    
+    config: any
+    pool: any
 
     constructor(config){
         this.config = config;
