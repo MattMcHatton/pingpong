@@ -28,6 +28,7 @@ class App extends React.Component {
       body: JSON.stringify({ post: "Post" }),
     });
     const body = await response.text();
+    console.log(body)
   };
 
 
