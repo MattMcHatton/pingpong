@@ -1,23 +1,35 @@
-import React from 'react';
+import React, { ChangeEventHandler } from 'react';
 import './App.css';
 import Button from '../node_modules/@mui/material/Button';
+import { RadioGroup, FormControlLabel, Radio } from '../node_modules/@mui/material/';
+import TextField from '../node_modules/@mui/material/TextField';
+import { RoundedCornerSharp } from '@mui/icons-material';
+
 
 class App extends React.Component <{}, any> {
   
+  default = {
+    showRecordButton: true,
+    showScheduleButton: true,
+    recordMatch: false,
+    scheduleMatch: false,
+    rounds: []
+  }
+
   constructor(props) {
     super(props);
-    this.state = {
-      showRecordButton: true,
-      showScheduleButton: true,
-      recordMatch: false,
-      scheduleMatch: false,
-    };
+    this.state = this.default;
   }
   
   _updateScreen = (event: string) => {
     if(event === 'record') return this.setState({showScheduleButton: false, recordMatch: true})
     if(event === 'schedule') return this.setState({showRecordButton: false, scheduleMatch: true})
-    return this.setState({showScheduleButton: true, showRecordButton: true, recordMatch: false, scheduleMatch: false})
+    return this.setState(this.default)
+  }
+
+  submitMatch = async e => {
+    console.log("Match Submitted")
+    return this.setState(this.default)
   }
 
   callApi = async e => {
@@ -51,8 +63,28 @@ class App extends React.Component <{}, any> {
           { this.state.showRecordButton && <Button  variant="contained" onClick={this._updateScreen.bind(null, 'record')}>Record a match</Button> } 
           </div>
           {
-            this.state.recordMatch &&
-            <p>hidy ho</p>
+            (this.state.recordMatch) &&
+            <div>
+              <TextField id="home-user" label="Home Player" variant="standard" required />
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <TextField id="away-user" label="Away Player" variant="standard" required />
+            <div>
+              <TextField id="home-score-r1" label="Round 1 Home Score" variant="standard" required />
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <TextField id="away-score-r1" label="Round 1 Away Score" variant="standard" required />
+            </div>
+            <div>
+              <TextField id="home-score-r2" label="Round 2 Home Score" variant="standard" required />
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <TextField id="away-score-r2" label="Round 2 Away Score" variant="standard" required />
+            </div>
+            <div>
+              <TextField id="home-score-r3" label="Round 3 Home Score" variant="standard" />
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <TextField id="away-score-r3" label="Round 3 Away Score" variant="standard" />
+            </div>
+            <Button  variant="contained" onClick={this.submitMatch}>Submit Match</Button>
+            </div>
           }
           <div>
           { this.state.showScheduleButton && <Button variant="contained" onClick={this._updateScreen.bind(null, 'schedule')}>Schedule a match</Button> }
