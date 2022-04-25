@@ -1,15 +1,25 @@
 import React from 'react';
 import './App.css';
+import Button from '../node_modules/@mui/material/Button';
 
-class App extends React.Component {
+class App extends React.Component <{}, any> {
+  
   constructor(props) {
     super(props);
     this.state = {
-      response: '',
-      responseToPost: ''
+      showRecordButton: true,
+      showScheduleButton: true,
+      recordMatch: false,
+      scheduleMatch: false,
     };
   }
   
+  _updateScreen = (event: string) => {
+    if(event === 'record') return this.setState({showScheduleButton: false, recordMatch: true})
+    if(event === 'schedule') return this.setState({showRecordButton: false, scheduleMatch: true})
+    return this.setState({showScheduleButton: true, showRecordButton: true, recordMatch: false, scheduleMatch: false})
+  }
+
   callApi = async e => {
     e.preventDefault();
     const response = await fetch('/user');
@@ -38,23 +48,17 @@ class App extends React.Component {
         <h3>Ping Pong</h3>
         <form onSubmit={this.handleSubmit}>
           <div>
-          <label>
-            Who should you battle?
-          </label>
-          <button onClick={this.callApi}>
-            Get Opponent
-          </button>
+          { this.state.showRecordButton && <Button  variant="contained" onClick={this._updateScreen.bind(null, 'record')}>Record a match</Button> } 
+          </div>
+          {
+            this.state.recordMatch &&
+            <p>hidy ho</p>
+          }
+          <div>
+          { this.state.showScheduleButton && <Button variant="contained" onClick={this._updateScreen.bind(null, 'schedule')}>Schedule a match</Button> }
           </div>
           <div>
-          <label htmlFor="new-player">
-            Add Opponents
-          </label>
-          <input
-            id="new-player"
-          />
-          <button onClick={this.handleSubmit}>
-            Add Opponent
-          </button>
+          <Button variant="contained" onClick={this._updateScreen.bind(null, 'back')}>Back</Button>
           </div>
         </form>
       </div>
