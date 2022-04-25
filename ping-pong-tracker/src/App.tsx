@@ -1,9 +1,7 @@
 import React, { ChangeEventHandler } from 'react';
 import './App.css';
 import Button from '../node_modules/@mui/material/Button';
-import { RadioGroup, FormControlLabel, Radio } from '../node_modules/@mui/material/';
-import TextField from '../node_modules/@mui/material/TextField';
-import { RoundedCornerSharp } from '@mui/icons-material';
+import TextField from '../node_modules/@mui/material/TextField'
 
 
 class App extends React.Component <{}, any> {
@@ -27,8 +25,18 @@ class App extends React.Component <{}, any> {
     return this.setState(this.default)
   }
 
-  submitMatch = async e => {
-    console.log("Match Submitted")
+  handleSubmit = async e => {
+    const players = {
+      home_player: (document.getElementById('home-user') as HTMLTextAreaElement).value,
+      away_player: (document.getElementById('away-user') as HTMLTextAreaElement).value,
+    }
+    const rounds = [
+      [(document.getElementById('home-score-r1') as HTMLTextAreaElement).value, (document.getElementById('away-score-r1') as HTMLTextAreaElement).value],
+      [(document.getElementById('home-score-r2') as HTMLTextAreaElement).value, (document.getElementById('away-score-r2') as HTMLTextAreaElement).value],
+      [(document.getElementById('home-score-r3') as HTMLTextAreaElement).value, (document.getElementById('away-score-r3') as HTMLTextAreaElement).value]
+    ]
+    console.log(players)
+    console.log(rounds)
     return this.setState(this.default)
   }
 
@@ -40,18 +48,18 @@ class App extends React.Component <{}, any> {
     return body;
   };
 
-  handleSubmit = async e => {
-    e.preventDefault();
-    const response = await fetch('/user', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ post: "Post" }),
-    });
-    const body = await response.text();
-    console.log(body)
-  };
+  // handleSubmit = async e => {
+  //   e.preventDefault();
+  //   const response = await fetch('/user', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({ post: "Post" }),
+  //   });
+  //   const body = await response.text();
+  //   console.log(body)
+  // };
 
 
   render() {
@@ -83,7 +91,7 @@ class App extends React.Component <{}, any> {
               &nbsp;&nbsp;&nbsp;&nbsp;
               <TextField id="away-score-r3" label="Round 3 Away Score" variant="standard" />
             </div>
-            <Button  variant="contained" onClick={this.submitMatch}>Submit Match</Button>
+            <Button type="submit" variant="contained">Submit Match</Button>
             </div>
           }
           <div>
