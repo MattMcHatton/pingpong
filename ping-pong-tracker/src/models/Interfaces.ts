@@ -11,7 +11,7 @@ export class IMatch {
 
 export class IUser {
     guid?: string
-    player_name: string
+    player_name?: string
     username: string
     active?: Boolean
 };
@@ -22,3 +22,8 @@ export class IRound {
     round_number: number
     match_id: Match
 };
+
+export class IResponse {
+    statusCode: number
+    body: object
+}

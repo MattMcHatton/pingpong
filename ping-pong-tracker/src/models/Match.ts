@@ -21,7 +21,7 @@ export class Match {
     }
 
     recordMatch(){
-        return
+        
     }
 
 }

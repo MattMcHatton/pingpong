@@ -1,26 +1,28 @@
-import { IUser } from "./Interfaces"
-
 export class User {
 
     guid?: string
-    player_name: string
-    username: string
+    player_name?: string
+    username: String
     active: Boolean
 
-    constructor({player_name, username}: IUser){
-        this.player_name = player_name
+    constructor(username: String){
         this.username = username
     }
 
-    getUser(){
+    async getUser(conn: any) {
+        let response
+        if (!this.username) {
+            response = await conn.select().table('players').then(res => console.log(res))
+        }
+        response = await conn.select().table('players').where({username: this.username})
+        return response
+    }
+
+    addUser(conn: any){
         return
     }
 
-    addUser(){
-        return
-    }
-
-    deleteUser(){
+    deleteUser(conn: any){
         return
     }
 

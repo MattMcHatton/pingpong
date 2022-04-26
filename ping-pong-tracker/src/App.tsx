@@ -42,7 +42,7 @@ class App extends React.Component <{}, any> {
 
   callApi = async e => {
     e.preventDefault();
-    const response = await fetch('/user');
+    const response = await fetch('/user/"matt.mchatton@dialexa.com"');
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
     return body;
