@@ -1,5 +1,5 @@
 import mssql from 'mssql'
-import knex, { Knex } from 'knex'
+import knex from 'knex'
 
 export class dbConnect {
     
