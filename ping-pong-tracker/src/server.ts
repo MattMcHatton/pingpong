@@ -17,9 +17,9 @@ app.get('/user/:username', async (req, res) => {
 
   const user: User = new User(req.params.username)
   const db: dbConnect = new dbConnect(config)
-  const body: object = await user.getUser(db.conn)
+  const response: Response = await user.getUser(db.conn)
   
-  res.status(200).send(body)
+  res.status(response.status).send(response.body)
 
 });
 
