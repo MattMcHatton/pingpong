@@ -13,10 +13,23 @@ export class User {
     async getUser(conn: any) {
 
         let response
-        if (!this.username) {
-            response = await conn.select().table('players').then(res => console.log(res))
+        try {
+            if (!this.username) {
+                response = await conn.select().table('players')
+            }
+            let record = await conn.select().table('players').where({username: this.username})
+            
+            response = {
+                status: 200,
+                body: record
+            }
+        } catch {
+            response = {
+                status: 500,
+                body: 'Internal Server Error'
+            }
         }
-        response = await conn.select().table('players').where({username: this.username})
+        
         return response
 
     }

@@ -1,18 +1,15 @@
-import { User } from './User'
-import { Match } from './Match'
-
 export class IMatch {
-    guid?: string
-    home_user: User
-    away_user: User
+    guid?: String
+    home_user: String
+    away_user: String
     match_date: Date
-    winner?: User
+    winner?: String
 };
 
 export class IUser {
-    guid?: string
-    player_name?: string
-    username: string
+    guid?: String
+    player_name?: String
+    username: String
     active?: Boolean
 };
 
@@ -20,7 +17,7 @@ export class IRound {
     home_score: number
     away_score: number
     round_number: number
-    match_id: Match
+    match_id: String
 };
 
 export class IResponse {
