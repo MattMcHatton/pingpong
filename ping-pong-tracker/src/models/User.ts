@@ -14,7 +14,7 @@ export class User {
 
         let response
         try {
-            if (!this.username) {
+            if (this.username) {
                 response = await conn.select().table('players')
             }
             let record = await conn.select().table('players').where({username: this.username})
