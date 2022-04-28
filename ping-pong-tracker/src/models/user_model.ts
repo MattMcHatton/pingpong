@@ -1,64 +1,52 @@
+import conn from '../util/database.js'
+
 export class User {
 
-    guid?: String
-    password?: String
-    player_name?: String
-    username: String
-    active: Boolean
+    static async getUser(username: String) {
 
-    constructor(username: String){
-        this.username = username
-    }
-
-    async getUser(conn: any) {
-
-        let response
         try {
-            if (this.username) {
-                response = await conn.select().table('players')
-            }
-            let record = await conn.select().table('players').where({username: this.username})
-            
-            response = {
+            if (username) { let record = await conn.select().table('players') }
+            let record = await conn.select().table('players').where({username: username})
+            return {
                 status: 200,
                 body: record
             }
         } catch {
-            response = {
+            return {
                 status: 500,
                 body: 'Internal Server Error'
             }
         }
-        
-        return response
 
     }
 
-    async addUser(conn: any, player_name: String, password?: String){
+    static async addUser(body: object){
 
-        let response
+        let username = body['username']
+        let player_name = body['fullName']
+
         try {
             
-            let userExists = await this._userExists(conn)
+            let userExists = await this._userExists(username)
             if(!userExists){
                 await conn('players').insert({
-                    username: this.username,
+                    username: username,
                     active: 1,
                     player_name: player_name
                 })
     
-                let guid = await this._getGuid(conn)
+                let guid = await this._getGuid(username)
     
-                response = {
+                return {
                     status: 201,
                     body: {
-                        username: this.username,
+                        username: username,
                         fullName: player_name,
                         guid: guid
                     }
                 }
             } else {
-                response = {
+                return {
                     status: 409,
                     body: 'User Already Exists'
                 }
@@ -66,21 +54,19 @@ export class User {
             
 
         } catch {
-            response = {
+            return {
                 status: 500,
                 body: 'Internal Server Error'
             }
         }
-
-        return response
-
     }
 
-    async updateUser(conn: any, body: object){
+    static async updateUser(body: object){
         
-        let response
+        let username = body['username']
+
         try {
-            let guid = await this._getGuid(conn)
+            let guid = await this._getGuid(body['username'])
 
             if(body['fullName']) await conn('players').where({guid: guid}).update({player_name:body['fullName']})
             if(body['active'] !== undefined) await conn('players').where({guid: guid}).update({active:body['active']})
@@ -88,65 +74,64 @@ export class User {
 
             let record = await conn.select().table('players').where({guid: guid})
 
-            response = {
+            return {
                 status: 201,
                 body: record
             }
 
         } catch {
-            response = {
+            return {
                 status: 500,
                 body: 'Internal Server Error'
             }
         }
 
-        return response
     }
 
-    async deleteUser(conn: any){
+    static async deleteUser(body: object){
         
-        let response
+        let username = body['username']
+
         try {
-            let guid = await this._getGuid(conn)
+            let userExists = await this._userExists(username)
+            if (!userExists){
+                return {
+                    status: 200,
+                    body: []
+                }
+            }
+            let guid = await this._getGuid(username)
             await conn('players').where({
                 guid: guid
             }).del()
 
-            response = {
+            return {
                 status: 200,
                 body: {
-                    username: this.username,
+                    username: username,
                     guid: guid
                 }
             }
         } catch {
-            response = {
+            return {
                 status: 500,
                 body: 'Internal Server Error'
             }
         }
 
-        return response
-
     }
 
+    static async _getGuid(username: String){
 
-    async _getGuid(conn: any){
-
-        let record =  await conn.select().table('players').where({username: this.username})
-        console.log(this.username)
-        console.log(record)
-        
+        let record =  await conn.select().table('players').where({username: username})
         if (record.length != 0) return record[0]['guid']
-        
         return false
 
     }
 
-    async _userExists(conn){
+    static async _userExists(username: String){
 
-        let record = await this._getGuid(conn)
-        console.log(record)
+        let record = await this._getGuid(username)
         return record !== false ? true : false
 
     }
