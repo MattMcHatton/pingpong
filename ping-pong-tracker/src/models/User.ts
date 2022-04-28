@@ -38,22 +38,33 @@ export class User {
 
         let response
         try {
-            await conn('players').insert({
-                username: this.username,
-                active: 1,
-                player_name: player_name
-            })
-
-            let guid = await this._getGuid(conn, this.username)
-
-            response = {
-                status: 201,
-                body: {
+            
+            let userExists = await this._userExists(conn)
+            if(!userExists){
+                await conn('players').insert({
                     username: this.username,
-                    fullName: player_name,
-                    guid: guid
+                    active: 1,
+                    player_name: player_name
+                })
+    
+                let guid = await this._getGuid(conn)
+    
+                response = {
+                    status: 201,
+                    body: {
+                        username: this.username,
+                        fullName: player_name,
+                        guid: guid
+                    }
+                }
+            } else {
+                response = {
+                    status: 409,
+                    body: 'User Already Exists'
                 }
             }
+            
+
         } catch {
             response = {
                 status: 500,
@@ -69,7 +80,7 @@ export class User {
         
         let response
         try {
-            let guid = await this._getGuid(conn, this.username)
+            let guid = await this._getGuid(conn)
 
             if(body['fullName']) await conn('players').where({guid: guid}).update({player_name:body['fullName']})
             if(body['active'] !== undefined) await conn('players').where({guid: guid}).update({active:body['active']})
@@ -96,7 +107,7 @@ export class User {
         
         let response
         try {
-            let guid = await this._getGuid(conn, this.username)
+            let guid = await this._getGuid(conn)
             await conn('players').where({
                 guid: guid
             }).del()
@@ -120,10 +131,23 @@ export class User {
     }
 
 
-    async _getGuid(conn: any, username: String){
+    async _getGuid(conn: any){
 
         let record =  await conn.select().table('players').where({username: this.username})
-        return record[0]['guid']
+        console.log(this.username)
+        console.log(record)
+        
+        if (record.length != 0) return record[0]['guid']
+        
+        return false
+
+    }
+
+    async _userExists(conn){
+
+        let record = await this._getGuid(conn)
+        console.log(record)
+        return record !== false ? true : false
 
     }
 

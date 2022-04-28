@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import bodyParser from 'body-parser'
 import { config } from './config/config.js'
 import { User } from './models/User.js'
+import { Match } from './models/Match.js'
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -58,13 +59,44 @@ app.delete('/user', async (req, res) => {
 
 //get a match
 app.get('/match', async (req, res) => {
-  
-  return
+
+  let match: Match 
+  const home_user: String = String(req.query['home_user'])
+  const away_user = String(req.query['away_user'])
+  const match_date = String(req.query['match_date'])
+
+  const db: dbConnect = new dbConnect(config)
+
+  if (home_user != 'undefined' && away_user != 'undefined' && match_date != 'undefined') {
+    match = new Match({
+      home_user: home_user,
+      away_user: away_user,
+      match_date: match_date
+    }) 
+  } else {
+    match = new Match({})
+  }
+
+  const response: Response = await match.getMatch(db.conn)
+
+  res.status(response.status).send(response.body)
+
 })
 
 //create a new match
 app.post('/match', async (req, res) => {
-  return
+
+  const body = req.body
+  const db: dbConnect = new dbConnect(config)
+  const match: Match = new Match({
+    home_user: body.homeUser, 
+    away_user: body.awayUser, 
+    match_date: body.matchDate
+  })
+  const response: Response = await match.recordMatch(db.conn)
+
+  res.status(response.status).send(response.body)
+
 })
 
 //get rounds from a match

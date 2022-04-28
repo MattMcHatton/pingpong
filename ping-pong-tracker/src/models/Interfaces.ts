@@ -1,8 +1,8 @@
 export class IMatch {
     guid?: String
-    home_user: String
-    away_user: String
-    match_date: Date
+    home_user?: String
+    away_user?: String
+    match_date?: String
     winner?: String
 };
 
