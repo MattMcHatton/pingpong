@@ -3,7 +3,7 @@ import { User } from '../models/user_model.js'
 export class user_controller {
 
     static async getUser(req, res) {
-        let response = await User.getUser(req.params.username)
+        let response = await User.getUser(req.params)
         res.status(response.status).send(response.body)
     }
     

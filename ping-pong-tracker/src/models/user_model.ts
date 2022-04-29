@@ -2,8 +2,8 @@ import conn from '../util/database.js'
 
 export class User {
 
-    static async getUser(username: String) {
-
+    static async getUser(params: object) {
+        let username = params['username']
         try {
             if (!(!!username)) { 
                 let records = await conn.select().table('players')
