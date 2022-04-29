@@ -83,10 +83,11 @@ export class Match {
         
         let winner = body['winner']
         
-        let isValid = await this._isValid(winner)
+        let isValid = await this._isValid(winner, match_id)
 
         try {
-            await conn('matches').insert({
+
+            await conn('matches').update({
                 winner: winner
             }).where({match_guid: match_id})
             if (isValid){
@@ -118,8 +119,9 @@ export class Match {
 
     }
 
-    static async _isValid(username: String) {
-        return true
+    static async _isValid(username: String, match_id: String) {
+        let match = await conn('matches').select().where({match_guid: match_id})
+        return (match[0]['away_user_id'] === username || match[0]['home_user_id'] === username ) === true ? true : false
     }
 
     static async _getUserGuid(username: String){
