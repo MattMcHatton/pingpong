@@ -142,7 +142,7 @@ export class Match {
         
         try{
             let result
-            if(Object.keys(queryParams).length != 0) {
+            if(!this._emptyParams(queryParams)) {
                 let round_number = queryParams['round_number']
                 result = await conn('rounds').select().where({
                     match_id: match_id,
@@ -164,6 +164,10 @@ export class Match {
             }
         }
 
+    }
+
+    static async _emptyParams(params: object){
+        return (Object.keys(params).length === 0) === true ? true : false
     }
 
     static async _isValid(username: String, match_id: String) {
