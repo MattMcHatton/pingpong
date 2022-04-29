@@ -79,6 +79,49 @@ export class Match {
 
     }
 
+    static async updateMatch(match_id: String, body: object){
+        
+        let winner = body['winner']
+        
+        let isValid = await this._isValid(winner)
+
+        try {
+            await conn('matches').insert({
+                winner: winner
+            }).where({match_guid: match_id})
+            if (isValid){
+                return {
+                    status: 200,
+                    body: {
+                        match_id: match_id,
+                        winner: winner
+                    }
+                }
+            }
+
+            return {
+                status: 409,
+                body: `${winner} is not a valid input`
+            }
+
+        } catch(err) {
+            return {
+                status: 500,
+                body: err
+            }
+        }
+        
+
+    }
+
+    static async addRounds(match_id: String, body){
+
+    }
+
+    static async _isValid(username: String) {
+        return true
+    }
+
     static async _getUserGuid(username: String){
 
         let record =  await conn.select().table('players').where({username: username})

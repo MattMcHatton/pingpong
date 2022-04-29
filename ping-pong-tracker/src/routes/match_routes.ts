@@ -7,5 +7,7 @@ match_router.get('/match', match_controller.getMatch )
 
 match_router.post('/match', match_controller.recordMatch )
 
+match_router.put('/match/:match_id', match_controller.updateMatch )
+
 
 export default match_router
