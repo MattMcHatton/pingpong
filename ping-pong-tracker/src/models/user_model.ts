@@ -2,16 +2,26 @@ import conn from '../util/database.js'
 
 export class User {
 
-    static async getUser(username: String) {
-
+    static async getUser(params: object) {
+        let username = params['username']
         try {
-            if (username) { let record = await conn.select().table('players') }
-            let record = await conn.select().table('players').where({username: username})
+            if (!(!!username)) { 
+                let records = await conn.select().table('players')
+                records.forEach(record => {
+                    delete record['password']
+                })
+                return {
+                    status: 200,
+                    body: records
+                }
+            }
+            let record: any = await conn.select().table('players').where({username: username}).first()
+            delete record['password']
             return {
                 status: 200,
                 body: record
             }
-        } catch {
+        } catch (err){
             return {
                 status: 500,
                 body: 'Internal Server Error'
@@ -36,7 +46,7 @@ export class User {
                 })
     
                 let guid = await this._getGuid(username)
-    
+
                 return {
                     status: 201,
                     body: {
@@ -48,7 +58,7 @@ export class User {
             } else {
                 return {
                     status: 409,
-                    body: 'User Already Exists'
+                    body: `${username} already exists`
                 }
             }
             
@@ -64,13 +74,14 @@ export class User {
     static async updateUser(body: object){
         
         let username = body['username']
+        let updatedAt = new Date()
 
         try {
-            let guid = await this._getGuid(body['username'])
+            let guid = await this._getGuid(username)
 
-            if(body['fullName']) await conn('players').where({guid: guid}).update({player_name:body['fullName']})
-            if(body['active'] !== undefined) await conn('players').where({guid: guid}).update({active:body['active']})
-            if(body['password']) await conn('players').where({guid: guid}).update({password:body['password']})
+            if(body['fullName']) await conn('players').where({guid: guid}).update({player_name:body['fullName'], updated_at: updatedAt})
+            if(body['active'] !== undefined) await conn('players').where({guid: guid}).update({active:body['active'], updated_at: updatedAt})
+            if(body['password']) await conn('players').where({guid: guid}).update({password:body['password'], updated_at: updatedAt})
 
             let record = await conn.select().table('players').where({guid: guid})
 
@@ -123,7 +134,7 @@ export class User {
 
     static async _getGuid(username: String){
 
-        let record =  await conn.select().table('players').where({username: username})
+        let record = await conn.select('guid').table('players').where({username: username})
         if (record.length != 0) return record[0]['guid']
         return false
 
@@ -132,6 +143,7 @@ export class User {
     static async _userExists(username: String){
 
         let record = await this._getGuid(username)
+        console.log(record)
         return record !== false ? true : false
 
     }

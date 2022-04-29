@@ -12,15 +12,3 @@ export class IUser {
     username: String
     active?: Boolean
 };
-
-export class IRound {
-    home_score: number
-    away_score: number
-    round_number: number
-    match_id: String
-};
-
-export class IResponse {
-    statusCode: number
-    body: object
-}
