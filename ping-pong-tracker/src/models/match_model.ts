@@ -138,6 +138,34 @@ export class Match {
         }
     }
 
+    static async getRound(match_id: String, queryParams: object){
+        
+        try{
+            let result
+            if(Object.keys(queryParams).length != 0) {
+                let round_number = queryParams['round_number']
+                result = await conn('rounds').select().where({
+                    match_id: match_id,
+                    round_number: round_number
+                })
+            } else {
+                result = await conn('rounds').select().where({
+                    match_id: match_id
+                })
+            }
+            return {
+                status: 200,
+                body: result
+            }
+        } catch (err){
+            return {
+                status: 500,
+                body: err
+            }
+        }
+
+    }
+
     static async _isValid(username: String, match_id: String) {
         let match = await conn('matches').select().where({match_guid: match_id})
         return (match[0]['away_user_id'] === username || match[0]['home_user_id'] === username ) === true ? true : false
