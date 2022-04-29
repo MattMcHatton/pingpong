@@ -166,10 +166,6 @@ export class Match {
 
     }
 
-    static async _emptyParams(params: object){
-        return (Object.keys(params).length === 0) === true ? true : false
-    }
-
     static async _isValid(username: String, match_id: String) {
         let match = await conn('matches').select().where({match_guid: match_id})
         return (match[0]['away_user_id'] === username || match[0]['home_user_id'] === username ) === true ? true : false
@@ -191,6 +187,10 @@ export class Match {
         })
         return record[0]['match_guid']
 
+    }
+
+    static _emptyParams(params: object){
+        return (Object.keys(params).length === 0) === true ? true : false
     }
 
 }
