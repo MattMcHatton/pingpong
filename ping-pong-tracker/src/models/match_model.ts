@@ -82,26 +82,37 @@ export class Match {
     static async updateMatch(match_id: String, body: object){
         
         let winner = body['winner']
-        let isValid = await this._isValid(winner, match_id)
-
+        let match_date = body['match_date']
+        
         try {
-
-            await conn('matches').update({
-                winner: winner
-            }).where({match_guid: match_id})
-            if (isValid){
-                return {
-                    status: 200,
-                    body: {
-                        match_id: match_id,
+            if (winner) {
+                let isValid = await this._isValid(winner, match_id)
+                if (isValid){
+                    await conn('matches').update({
                         winner: winner
+                    }).where({match_guid: match_id})
+                } else {
+                    return {
+                        status: 409,
+                        body: `${winner} is not a valid input`
                     }
                 }
             }
+            
+            if (match_date) {
+                await conn('matches').update({
+                    match_date: match_date
+                }).where({match_guid: match_id})
+            }
+
 
             return {
-                status: 409,
-                body: `${winner} is not a valid input`
+                status: 200,
+                body: {
+                    match_id: match_id,
+                    winner: winner,
+                    match_date: match_date
+                }
             }
 
         } catch(err) {

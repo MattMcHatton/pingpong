@@ -46,7 +46,6 @@ export class User {
                 })
     
                 let guid = await this._getGuid(username)
-                console.log('under guid')
 
                 return {
                     status: 201,
@@ -59,7 +58,7 @@ export class User {
             } else {
                 return {
                     status: 409,
-                    body: 'User Already Exists'
+                    body: `${username} already exists`
                 }
             }
             
