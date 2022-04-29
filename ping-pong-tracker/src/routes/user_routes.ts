@@ -2,6 +2,8 @@ import express from 'express'
 import { user_controller } from '../controller/user_controller.js'
 var user_router = express.Router();
 
+user_router.get('/user', user_controller.getUser )
+
 user_router.get('/user/:username', user_controller.getUser )
 
 user_router.post('/user', user_controller.addUser )
