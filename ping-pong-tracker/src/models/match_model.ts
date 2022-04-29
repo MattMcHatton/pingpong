@@ -82,7 +82,6 @@ export class Match {
     static async updateMatch(match_id: String, body: object){
         
         let winner = body['winner']
-        
         let isValid = await this._isValid(winner, match_id)
 
         try {
@@ -115,8 +114,21 @@ export class Match {
 
     }
 
-    static async addRounds(match_id: String, body){
-
+    static async addRound(match_id: String, body){
+        
+        let round_number = body['round']
+        let home_score = body['homeScore']
+        let away_score = body['awayScore']
+        
+        return {
+            status: 201,
+            body: {
+                match_id: match_id,
+                round_number: round_number,
+                home_score: home_score,
+                away_score: away_score
+            }
+        }
     }
 
     static async _isValid(username: String, match_id: String) {
