@@ -6,18 +6,22 @@ export class User {
 
         try {
             if (!(!!username)) { 
-                let record = await conn.select().table('players')
+                let records = await conn.select().table('players')
+                records.forEach(record => {
+                    delete record['password']
+                })
                 return {
                     status: 200,
-                    body: record
+                    body: records
                 }
             }
-            let record = await conn.select().table('players').where({username: username}).first()
+            let record: any = await conn.select().table('players').where({username: username}).first()
+            delete record['password']
             return {
                 status: 200,
                 body: record
             }
-        } catch {
+        } catch (err){
             return {
                 status: 500,
                 body: 'Internal Server Error'
