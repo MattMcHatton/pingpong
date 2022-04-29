@@ -9,13 +9,14 @@ export class Match {
         let match_date = queryParams["match_date"]
         let user = queryParams["user"]
 
-        try {
 
-            //If single user, send all records
+        try {
+            let records
+            //If single user and date, send all records for that user and date, otherwise send all records for that user
             if(user) {
                 let user_guid = await this._getUserGuid(user)
                 if (match_date) {
-                    let records = await conn.select().table('matches').where({
+                    records = await conn.select().table('matches').where({
                         home_user_id: user_guid,
                         match_date: match_date
                     }).orWhere({
@@ -28,8 +29,8 @@ export class Match {
                         body: records
                     }
                 }
-                console.log(user)
-                let records = await conn.select().table('matches').where({
+
+                records = await conn.select().table('matches').where({
                     home_user_id: user_guid,
                 }).orWhere({
                     away_user_id: user_guid,
@@ -41,21 +42,47 @@ export class Match {
                 }
             }
 
-            //If no params, send all records
-            if(!(!!home_user && !!away_user && !!match_date)) { 
-                let records = await conn.select().table('matches') 
+            //If match date is present, check for users. If both users are not present, just pass all matches for that date
+            if (match_date) {
+                console.log(match_date)
+                if(home_user && away_user) {
+                    let home_user_guid = await this._getUserGuid(home_user)
+                    let away_user_guid = await this._getUserGuid(away_user)
+
+                    records = await conn.select().table('matches').where({
+                        home_user_id: home_user_guid,
+                        away_user_id: away_user_guid,
+                        match_date: match_date
+                    }).orWhere({
+                        home_user_id: away_user_guid,
+                        away_user_id: home_user_guid,
+                        match_date: match_date
+                    })
+    
+                    return {
+                        status: 200,
+                        body: records
+                    }
+                }
+                console.log(match_date)
+                records = await conn.select().table('matches').where({
+                    match_date: match_date
+                })
+                
                 return {
                     status: 200,
                     body: records
                 }
-            }
 
-            let home_user_guid = await this._getUserGuid(home_user)
-            let away_user_guid = await this._getUserGuid(away_user)
+            } 
 
-            
-            if (match_date) {
-                let records = await conn.select().table('matches').where({
+            //If both users present, pass all of their matches
+            if (home_user && away_user) {
+
+                let home_user_guid = await this._getUserGuid(home_user)
+                let away_user_guid = await this._getUserGuid(away_user)
+    
+                records = await conn.select().table('matches').where({
                     home_user_id: home_user_guid,
                     away_user_id: away_user_guid,
                     match_date: match_date
@@ -64,25 +91,22 @@ export class Match {
                     away_user_id: home_user_guid,
                     match_date: match_date
                 })
-
+    
                 return {
                     status: 200,
                     body: records
                 }
+                
             }
 
-            let records = await conn.select().table('matches').where({
-                home_user_id: home_user_guid,
-                away_user_id: away_user_guid
-            }).orWhere({
-                home_user_id: away_user_guid,
-                away_user_id: home_user_guid
-            })
-
+            //If no params, send all records
+            records = await conn.select().table('matches') 
             return {
                 status: 200,
                 body: records
             }
+
+
 
         } catch (err) {
             return {
