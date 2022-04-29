@@ -7,8 +7,39 @@ export class Match {
         let home_user = queryParams["home_user"]
         let away_user = queryParams["away_user"]
         let match_date = queryParams["match_date"]
+        let user = queryParams["user"]
 
         try {
+
+            if(user) {
+                let user_guid = await this._getUserGuid(away_user)
+                if (match_date) {
+                    let records = await conn.select().table('matches').where({
+                        home_user_id: user_guid,
+                        match_date: match_date
+                    }).orWhere({
+                        away_user_id: user_guid,
+                        match_date: match_date
+                    })
+    
+                    return {
+                        status: 200,
+                        body: records
+                    }
+                }
+
+                let records = await conn.select().table('matches').where({
+                    home_user_id: user_guid,
+                }).orWhere({
+                    away_user_id: user_guid,
+                })
+
+                return {
+                    status: 200,
+                    body: records
+                }
+            }
+
 
             if(!(!!home_user && !!away_user && !!match_date)) { 
                 let records = await conn.select().table('matches') 
@@ -21,10 +52,30 @@ export class Match {
             let home_user_guid = await this._getUserGuid(home_user)
             let away_user_guid = await this._getUserGuid(away_user)
 
+            
+            if (match_date) {
+                let records = await conn.select().table('matches').where({
+                    home_user_id: home_user_guid,
+                    away_user_id: away_user_guid,
+                    match_date: match_date
+                }).orWhere({
+                    home_user_id: away_user_guid,
+                    away_user_id: home_user_guid,
+                    match_date: match_date
+                })
+
+                return {
+                    status: 200,
+                    body: records
+                }
+            }
+
             let records = await conn.select().table('matches').where({
                 home_user_id: home_user_guid,
-                away_user_id: away_user_guid,
-                match_date: match_date
+                away_user_id: away_user_guid
+            }).orWhere({
+                home_user_id: away_user_guid,
+                away_user_id: home_user_guid
             })
 
             return {
