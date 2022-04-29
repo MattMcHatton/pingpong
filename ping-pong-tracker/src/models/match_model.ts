@@ -116,9 +116,16 @@ export class Match {
 
     static async addRound(match_id: String, body){
         
-        let round_number = body['round']
-        let home_score = body['homeScore']
-        let away_score = body['awayScore']
+        let round_number = body['round_number']
+        let home_score = body['home_score']
+        let away_score = body['away_score']
+
+        await conn('rounds').insert({
+            match_id: match_id,
+            round_number: round_number,
+            home_score: home_score,
+            away_score: away_score
+        })
         
         return {
             status: 201,

@@ -17,4 +17,9 @@ export class match_controller {
         res.status(response.status).send(response.body)
     }
 
+    static async addRound(req, res) {
+        let response = await Match.addRound(req.params.match_id, req.body)
+        res.status(response.status).send(response.body)
+    }
+
 }
