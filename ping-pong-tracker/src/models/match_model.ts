@@ -79,6 +79,98 @@ export class Match {
 
     }
 
+    static async updateMatch(match_id: String, body: object){
+        
+        let winner = body['winner']
+        let isValid = await this._isValid(winner, match_id)
+
+        try {
+
+            await conn('matches').update({
+                winner: winner
+            }).where({match_guid: match_id})
+            if (isValid){
+                return {
+                    status: 200,
+                    body: {
+                        match_id: match_id,
+                        winner: winner
+                    }
+                }
+            }
+
+            return {
+                status: 409,
+                body: `${winner} is not a valid input`
+            }
+
+        } catch(err) {
+            return {
+                status: 500,
+                body: err
+            }
+        }
+        
+
+    }
+
+    static async addRound(match_id: String, body){
+        
+        let round_number = body['round_number']
+        let home_score = body['home_score']
+        let away_score = body['away_score']
+
+        await conn('rounds').insert({
+            match_id: match_id,
+            round_number: round_number,
+            home_score: home_score,
+            away_score: away_score
+        })
+        
+        return {
+            status: 201,
+            body: {
+                match_id: match_id,
+                round_number: round_number,
+                home_score: home_score,
+                away_score: away_score
+            }
+        }
+    }
+
+    static async getRound(match_id: String, queryParams: object){
+        
+        try{
+            let result
+            if(Object.keys(queryParams).length != 0) {
+                let round_number = queryParams['round_number']
+                result = await conn('rounds').select().where({
+                    match_id: match_id,
+                    round_number: round_number
+                })
+            } else {
+                result = await conn('rounds').select().where({
+                    match_id: match_id
+                })
+            }
+            return {
+                status: 200,
+                body: result
+            }
+        } catch (err){
+            return {
+                status: 500,
+                body: err
+            }
+        }
+
+    }
+
+    static async _isValid(username: String, match_id: String) {
+        let match = await conn('matches').select().where({match_guid: match_id})
+        return (match[0]['away_user_id'] === username || match[0]['home_user_id'] === username ) === true ? true : false
+    }
+
     static async _getUserGuid(username: String){
 
         let record =  await conn.select().table('players').where({username: username})
