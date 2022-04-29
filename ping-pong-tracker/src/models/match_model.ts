@@ -155,8 +155,9 @@ export class Match {
 
     }
 
-    static async updateMatch(match_id: String, body: object){
+    static async updateMatch(request_params: object, body: object){
         
+        let match_id = request_params['match_id']
         let winner = body['winner']
         let match_date = body['match_date']
         
@@ -201,8 +202,9 @@ export class Match {
 
     }
 
-    static async addRound(match_id: String, body){
+    static async addRound(request_params: object, body: object){
         
+        let match_id = request_params['match_id']
         let round_number = body['round_number']
         let home_score = body['home_score']
         let away_score = body['away_score']
@@ -225,8 +227,8 @@ export class Match {
         }
     }
 
-    static async getRound(match_id: String, queryParams: object){
-        
+    static async getRound(request_params: object, queryParams: object){
+        let match_id = request_params['match_id']
         try{
             let result
             if(!this._emptyParams(queryParams)) {
