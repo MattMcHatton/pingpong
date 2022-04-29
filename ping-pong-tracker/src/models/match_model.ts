@@ -135,7 +135,6 @@ export class Match {
             })
 
             let guid = await this._getMatchGuid(home_user_guid, away_user_guid, match_date)
-            console.log(guid)
 
             return {
                 status: 201,
