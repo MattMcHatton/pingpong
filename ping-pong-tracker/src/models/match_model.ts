@@ -11,8 +11,9 @@ export class Match {
 
         try {
 
+            //If single user, send all records
             if(user) {
-                let user_guid = await this._getUserGuid(away_user)
+                let user_guid = await this._getUserGuid(user)
                 if (match_date) {
                     let records = await conn.select().table('matches').where({
                         home_user_id: user_guid,
@@ -27,7 +28,7 @@ export class Match {
                         body: records
                     }
                 }
-
+                console.log(user)
                 let records = await conn.select().table('matches').where({
                     home_user_id: user_guid,
                 }).orWhere({
@@ -40,7 +41,7 @@ export class Match {
                 }
             }
 
-
+            //If no params, send all records
             if(!(!!home_user && !!away_user && !!match_date)) { 
                 let records = await conn.select().table('matches') 
                 return {
