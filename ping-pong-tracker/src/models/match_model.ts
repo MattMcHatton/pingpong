@@ -44,7 +44,6 @@ export class Match {
 
             //If match date is present, check for users. If both users are not present, just pass all matches for that date
             if (match_date) {
-                console.log(match_date)
                 if(home_user && away_user) {
                     let home_user_guid = await this._getUserGuid(home_user)
                     let away_user_guid = await this._getUserGuid(away_user)
@@ -64,7 +63,7 @@ export class Match {
                         body: records
                     }
                 }
-                console.log(match_date)
+
                 records = await conn.select().table('matches').where({
                     match_date: match_date
                 })

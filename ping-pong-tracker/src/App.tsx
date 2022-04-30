@@ -60,9 +60,6 @@ class App extends React.Component <{}, any> {
     let home_player = json['home_user']
     let away_player = json['away_user']
     
-    console.log(matchGuid)
-    console.log(home_player)
-    console.log(away_player)
     let roundRequestOptions
     
     for(let round_number=0; round_number<rounds.length; round_number++) {
