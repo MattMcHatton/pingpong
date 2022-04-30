@@ -3,6 +3,7 @@ import * as dotenv from 'dotenv'
 import './App.css';
 import Button from '../node_modules/@mui/material/Button';
 import TextField from '../node_modules/@mui/material/TextField'
+import { Select, MenuItem, InputLabel, FormControl, SelectChangeEvent, Stack } from '@mui/material';
 
 class App extends React.Component <{}, any> {
   
@@ -11,7 +12,10 @@ class App extends React.Component <{}, any> {
     showScheduleButton: true,
     recordMatch: false,
     scheduleMatch: false,
-    rounds: []
+    rounds: [],
+    users: [],
+    home_user: '',
+    away_user: ''
   }
 
   constructor(props) {
@@ -123,6 +127,17 @@ class App extends React.Component <{}, any> {
     return body;
   };
 
+  // _scheduleMatch = async e => {
+  //   const scheduleMatchRequestOptions = {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify({ 
+  //       home_player: this.state.home_player,
+  //       away_player: this.state.away_player,
+  //       match_date: 
+  //     })
+  //   };
+  // }
   // handleSubmit = async e => {
   //   e.preventDefault();
   //   const response = await fetch('/user', {
@@ -136,6 +151,13 @@ class App extends React.Component <{}, any> {
   //   console.log(body)
   // };
 
+  _handleHomeUserChange = (event: SelectChangeEvent) => {
+    return this.setState({home_user: event.target.value})
+  };
+
+  _handleAwayUserChange = (event: SelectChangeEvent) => {
+    return this.setState({away_user: event.target.value})
+  };
 
   render() {
     return (
@@ -148,9 +170,38 @@ class App extends React.Component <{}, any> {
           {
             (this.state.recordMatch) &&
             <div>
-              <TextField id="home-user" label="Home Player" variant="standard" required />
+              {/* <TextField id="home-user" label="Home Player" variant="standard" required />
               &nbsp;&nbsp;&nbsp;&nbsp;
-              <TextField id="away-user" label="Away Player" variant="standard" required />
+              <TextField id="away-user" label="Away Player" variant="standard" required /> */}
+              <FormControl sx={{ m: 1, minWidth: 160 }}>
+                <InputLabel id="home-player">Home Player</InputLabel>
+                <Select
+                  labelId="home-player-label"
+                  id="home-player-select"
+                  value={this.state.home_user}
+                  label="Age"
+                  onChange={this._handleHomeUserChange}
+                >
+                  <MenuItem value={'matt.mchatton@dialexa.com'}>Matt McHatton</MenuItem>
+                  <MenuItem value={'matt.tucker@dialexa.com'}>Matt Tucker</MenuItem>
+                  <MenuItem value={'brandon.harper@dialexa.com'}>Brandon Harper</MenuItem>
+                </Select>
+              </FormControl>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <FormControl sx={{ m: 1, minWidth: 160 }}>
+                <InputLabel id="away-player">Away Player</InputLabel>
+                <Select
+                  labelId="away-player-label"
+                  id="home-player-select"
+                  value={this.state.away_user}
+                  label="Age"
+                  onChange={this._handleAwayUserChange}
+                >
+                  <MenuItem value={'matt.mchatton@dialexa.com'}>Matt McHatton</MenuItem>
+                  <MenuItem value={'matt.tucker@dialexa.com'}>Matt Tucker</MenuItem>
+                  <MenuItem value={'brandon.harper@dialexa.com'}>Brandon Harper</MenuItem>
+                </Select>
+              </FormControl>
             <div>
               <TextField id="home-score-r1" label="Round 1 Home Score" variant="standard" required />
               &nbsp;&nbsp;&nbsp;&nbsp;
@@ -172,6 +223,57 @@ class App extends React.Component <{}, any> {
           <div>
           { this.state.showScheduleButton && <Button variant="contained" onClick={this._updateScreen.bind(null, 'schedule')}>Schedule a match</Button> }
           </div>
+          {
+            (this.state.scheduleMatch) &&
+            <div>
+              <div>
+                <FormControl sx={{ m: 1, minWidth: 160 }}>
+                  <InputLabel id="home-player">Home Player</InputLabel>
+                  <Select
+                    labelId="home-player-label"
+                    id="home-player-select"
+                    value={this.state.home_user}
+                    label="Age"
+                    onChange={this._handleHomeUserChange}
+                  >
+                    <MenuItem value={'matt.mchatton@dialexa.com'}>Matt McHatton</MenuItem>
+                    <MenuItem value={'matt.tucker@dialexa.com'}>Matt Tucker</MenuItem>
+                    <MenuItem value={'brandon.harper@dialexa.com'}>Brandon Harper</MenuItem>
+                  </Select>
+                </FormControl>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <FormControl sx={{ m: 1, minWidth: 160 }}>
+                  <InputLabel id="away-player">Away Player</InputLabel>
+                  <Select
+                    labelId="away-player-label"
+                    id="home-player-select"
+                    value={this.state.away_user}
+                    label="Age"
+                    onChange={this._handleAwayUserChange}
+                  >
+                    <MenuItem value={'matt.mchatton@dialexa.com'}>Matt McHatton</MenuItem>
+                    <MenuItem value={'matt.tucker@dialexa.com'}>Matt Tucker</MenuItem>
+                    <MenuItem value={'brandon.harper@dialexa.com'}>Brandon Harper</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
+            <div>
+              <TextField
+                id="datetime-local"
+                label="Match Time"
+                type="datetime-local"
+                defaultValue="2022-01-01T00:00"
+                sx={{ width: 250 }}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </div>
+            <div>
+              <Button variant="contained" onClick={this._handleSubmit}>Submit Match</Button>
+            </div>
+          </div>
+          }
           <div>
           <Button variant="contained" onClick={this._updateScreen.bind(null, 'back')}>Back</Button>
           </div>
