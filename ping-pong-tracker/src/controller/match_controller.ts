@@ -1,4 +1,4 @@
-import { Match } from '../models/Match_model.js'
+import { Match } from '../models/match_model.js'
 
 export class match_controller {
 

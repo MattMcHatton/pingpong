@@ -119,9 +119,9 @@ export class Match {
 
     static async recordMatch(body: object){ 
 
-        let home_user = body["homeUser"]
-        let away_user = body["awayUser"]
-        let match_date = body["matchDate"]
+        let home_user = body["home_user"]
+        let away_user = body["away_user"]
+        let match_date = body["match_date"]
 
         try {
 
@@ -260,10 +260,8 @@ export class Match {
     }
 
     static async _getUserGuid(username: String){
-
         let record =  await conn.select().table('players').where({username: username})
         return record[0]['guid']
-
     }
 
     static async _getMatchGuid(home_user_guid, away_user_guid, match_date){
