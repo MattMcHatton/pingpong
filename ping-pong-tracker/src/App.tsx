@@ -31,8 +31,8 @@ class App extends React.Component <{}, any> {
 
   _handleSubmit = async e => {
     const players = {
-      home_player: (document.getElementById('home-user') as HTMLTextAreaElement).value,
-      away_player: (document.getElementById('away-user') as HTMLTextAreaElement).value,
+      home_player: this.state.home_user,
+      away_player: this.state.away_user
     }
 
     const rounds = [
@@ -174,10 +174,10 @@ class App extends React.Component <{}, any> {
               &nbsp;&nbsp;&nbsp;&nbsp;
               <TextField id="away-user" label="Away Player" variant="standard" required /> */}
               <FormControl sx={{ m: 1, minWidth: 160 }}>
-                <InputLabel id="home-player">Home Player</InputLabel>
+                <InputLabel id="home-user">Home Player</InputLabel>
                 <Select
-                  labelId="home-player-label"
-                  id="home-player-select"
+                  labelId="home-user-label"
+                  id="home-user"
                   value={this.state.home_user}
                   label="Age"
                   onChange={this._handleHomeUserChange}
@@ -189,10 +189,10 @@ class App extends React.Component <{}, any> {
               </FormControl>
               &nbsp;&nbsp;&nbsp;&nbsp;
               <FormControl sx={{ m: 1, minWidth: 160 }}>
-                <InputLabel id="away-player">Away Player</InputLabel>
+                <InputLabel id="away-user">Away Player</InputLabel>
                 <Select
-                  labelId="away-player-label"
-                  id="home-player-select"
+                  labelId="away-user-label"
+                  id="away-user"
                   value={this.state.away_user}
                   label="Age"
                   onChange={this._handleAwayUserChange}
