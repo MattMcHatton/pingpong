@@ -138,18 +138,6 @@ class App extends React.Component <{}, any> {
   //     })
   //   };
   // }
-  // handleSubmit = async e => {
-  //   e.preventDefault();
-  //   const response = await fetch('/user', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({ post: "Post" }),
-  //   });
-  //   const body = await response.text();
-  //   console.log(body)
-  // };
 
   _handleHomeUserChange = (event: SelectChangeEvent) => {
     return this.setState({home_user: event.target.value})
