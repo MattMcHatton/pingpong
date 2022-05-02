@@ -2,13 +2,10 @@ import conn from '../util/database.js'
 
 export class Match {
 
-    static async getMatch(queryParams: object){
+    static async getMatch(queryParams: any){
 
-        let home_user = queryParams["home_user"]
-        let away_user = queryParams["away_user"]
-        let match_date = queryParams["match_date"]
-        let user = queryParams["user"]
-
+        //object destructuring
+        let { home_user,away_user,match_date,user } = queryParams
 
         try {
             let records
