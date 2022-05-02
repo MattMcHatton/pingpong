@@ -84,11 +84,9 @@ export class Match {
                 records = await conn.select().table('matches').where({
                     home_user_id: home_user_guid,
                     away_user_id: away_user_guid,
-                    match_date: match_date
                 }).orWhere({
                     home_user_id: away_user_guid,
                     away_user_id: home_user_guid,
-                    match_date: match_date
                 })
     
                 return {
