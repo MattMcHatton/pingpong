@@ -6,6 +6,11 @@ export class match_controller {
         let response = await Match.getMatch(req.query)
         res.status(response.status).send(response.body)
     }
+
+    static async getSingleMatch(req, res) {
+        let response = await Match.getSingleMatch(req.params)
+        res.status(response.status).send(response.body)
+    }
     
     static async recordMatch(req, res) {
         let response = await Match.recordMatch(req.body)

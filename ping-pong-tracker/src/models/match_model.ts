@@ -56,6 +56,32 @@ export class Match {
         }
     }
 
+    static async getSingleMatch(requestParams: object){
+        
+        let match_guid = requestParams['match_id']
+
+        try {
+            let record = await conn.select()
+                .table('matches')
+                .where({match_guid: match_guid})
+                .limit(1)
+
+            return {
+                status: 200,
+                body: record
+            }
+
+        } catch (err) {
+            return {
+                status: 500,
+                body: err
+            }
+        }
+        
+
+
+    }
+
     static async recordMatch(body: object){ 
 
         let home_user = body["home_user"]

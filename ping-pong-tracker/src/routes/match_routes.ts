@@ -7,6 +7,8 @@ match_router.get('/match', match_controller.getMatch )
 
 match_router.post('/match', match_controller.recordMatch )
 
+match_router.get('/match/:match_id', match_controller.getSingleMatch )
+
 match_router.put('/match/:match_id', match_controller.updateMatch )
 
 match_router.get('/match/:match_id/round', match_controller.getRound )
