@@ -141,10 +141,16 @@ class App extends React.Component <{}, any> {
   // }
 
   _handleHomeUserChange = (event: SelectChangeEvent) => {
+    if((event.target.value != '') && (event.target.value == this.state.away_user)) {
+      return this.setState({home_user: ''})
+    }
     return this.setState({home_user: event.target.value})
   };
 
   _handleAwayUserChange = (event: SelectChangeEvent) => {
+    if((event.target.value != '') && (event.target.value == this.state.home_user)) {
+      return this.setState({away_user: ''})
+    }
     return this.setState({away_user: event.target.value})
   };
 
@@ -152,7 +158,7 @@ class App extends React.Component <{}, any> {
     return (
       <div>
         <h3>Ping Pong</h3>
-        <form onSubmit={this._handleSubmit}>
+        <form id="ping-pong-match" onSubmit={this._handleSubmit}>
           <div>
           { this.state.showRecordButton && <Button  variant="contained" onClick={this._updateScreen.bind(null, 'record')}>Record a match</Button> } 
           </div>
@@ -166,6 +172,7 @@ class App extends React.Component <{}, any> {
                   id="home-user"
                   value={this.state.home_user}
                   onChange={this._handleHomeUserChange}
+                  required
                 >
                   <MenuItem value={'matt.mchatton@dialexa.com'}>Matt McHatton</MenuItem>
                   <MenuItem value={'matt.tucker@dialexa.com'}>Matt Tucker</MenuItem>
@@ -182,6 +189,7 @@ class App extends React.Component <{}, any> {
                   id="away-user"
                   value={this.state.away_user}
                   onChange={this._handleAwayUserChange}
+                  required
                 >
                   <MenuItem value={'matt.mchatton@dialexa.com'}>Matt McHatton</MenuItem>
                   <MenuItem value={'matt.tucker@dialexa.com'}>Matt Tucker</MenuItem>
@@ -203,7 +211,7 @@ class App extends React.Component <{}, any> {
               &nbsp;&nbsp;&nbsp;&nbsp;
               <TextField id="away-score-r3" label="Round 3 Away Score" variant="standard" />
             </div>
-            <Button variant="contained" onClick={this._handleSubmit}>Submit Match</Button>
+            <Button variant="contained" type="submit" form="ping-pong-match">Submit Match</Button>
             </div>
           }
           <div>
