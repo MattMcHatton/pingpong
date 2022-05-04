@@ -143,7 +143,6 @@ export class User {
     static async _userExists(username: String){
 
         let record = await this._getGuid(username)
-        console.log(record)
         return record !== false ? true : false
 
     }

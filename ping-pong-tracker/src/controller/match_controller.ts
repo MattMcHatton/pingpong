@@ -1,9 +1,14 @@
-import { Match } from '../models/Match_model.js'
+import { Match } from '../models/match_model.js'
 
 export class match_controller {
 
     static async getMatch(req, res) {
         let response = await Match.getMatch(req.query)
+        res.status(response.status).send(response.body)
+    }
+
+    static async getSingleMatch(req, res) {
+        let response = await Match.getSingleMatch(req.params)
         res.status(response.status).send(response.body)
     }
     
