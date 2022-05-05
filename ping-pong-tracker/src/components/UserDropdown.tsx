@@ -1,56 +1,21 @@
 import * as React from 'react'
 import { Select, MenuItem, InputLabel, FormControl, SelectChangeEvent } from '@mui/material';
+import { useState } from 'react';
 
-class UserDropdown extends React.Component <{ type: String }, { type: String, home_user: String, away_user: String }> {
+export default function UserDropdown(props) {
     
-    default = {
-        type: this.props.type,
-        home_user: '',
-        away_user: ''
-    }
+    const [home_user, set_home_user] = useState("")
+    const [away_user, set_away_user] = useState("")
 
-    constructor(props) {
-        super(props);
-        this.state = this.default
-    }
-
-    _handleHomeUserChange = (event: SelectChangeEvent) => {
-        console.log(event.target.value)
-        this.setState({home_user: event.target.value})
-        console.log(this.state.away_user)
-        return
-      };
-    
-    _handleAwayUserChange = (event: SelectChangeEvent) => {
-        return this.setState({away_user: event.target.value})
-    };
-
-    render(){
-        if(this.props.type === 'away'){
-            return (
-                <FormControl sx={{ m: 1, minWidth: 160 }}>
-                    <InputLabel id="away-user">Away Player</InputLabel>
-                        <Select
-                        labelId="away-user-label"
-                        id="away-user"
-                        value={this.state.home_user}
-                        onChange={this._handleAwayUserChange}
-                        >
-                            <MenuItem value={'matt.mchatton@dialexa.com'}>Matt McHatton</MenuItem>
-                            <MenuItem value={'matt.tucker@dialexa.com'}>Matt Tucker</MenuItem>
-                            <MenuItem value={'brandon.harper@dialexa.com'}>Brandon Harper</MenuItem>
-                        </Select>
-                </FormControl>
-            )
-        }
+    if(props.type === 'away'){
         return (
             <FormControl sx={{ m: 1, minWidth: 160 }}>
-                <InputLabel id="home-user">Home Player</InputLabel>
+                <InputLabel id="away-user">Away Player</InputLabel>
                     <Select
-                    labelId="home-user-label"
-                    id="home-user"
-                    value={this.state.away_user}
-                    onChange={this._handleHomeUserChange}
+                    labelId="away-user-label"
+                    id="away-user"
+                    value={ home_user }
+                    onChange={(e) => set_home_user(e.target.value)}
                     >
                         <MenuItem value={'matt.mchatton@dialexa.com'}>Matt McHatton</MenuItem>
                         <MenuItem value={'matt.tucker@dialexa.com'}>Matt Tucker</MenuItem>
@@ -59,6 +24,20 @@ class UserDropdown extends React.Component <{ type: String }, { type: String, ho
             </FormControl>
         )
     }
+    return (
+        <FormControl sx={{ m: 1, minWidth: 160 }}>
+            <InputLabel id="home-user">Home Player</InputLabel>
+                <Select
+                labelId="home-user-label"
+                id="home-user"
+                value= { away_user }
+                onChange={(e) => set_away_user(e.target.value)}
+                >
+                    <MenuItem value={'matt.mchatton@dialexa.com'}>Matt McHatton</MenuItem>
+                    <MenuItem value={'matt.tucker@dialexa.com'}>Matt Tucker</MenuItem>
+                    <MenuItem value={'brandon.harper@dialexa.com'}>Brandon Harper</MenuItem>
+                </Select>
+        </FormControl>
+    )
 }
 
-export default UserDropdown

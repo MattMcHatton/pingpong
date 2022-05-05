@@ -4,7 +4,7 @@ import './App.css';
 import Button from '../node_modules/@mui/material/Button';
 import TextField from '../node_modules/@mui/material/TextField'
 import { Select, MenuItem, InputLabel, FormControl, SelectChangeEvent } from '@mui/material';
-//import UserDropdown from './components/UserDropdown';
+import UserDropdown from './components/UserDropdown';
 
 class App extends React.Component <{}, any> {
   
@@ -14,9 +14,6 @@ class App extends React.Component <{}, any> {
     recordMatch: false,
     scheduleMatch: false,
     rounds: [],
-    users: [],
-    home_user: '',
-    away_user: ''
   }
 
   constructor(props) {
@@ -165,37 +162,9 @@ class App extends React.Component <{}, any> {
           {
             (this.state.recordMatch) &&
             <div>
-              <FormControl sx={{ m: 1, minWidth: 160 }}>
-                <InputLabel id="home-user">Home Player</InputLabel>
-                <Select
-                  labelId="home-user-label"
-                  id="home-user"
-                  value={this.state.home_user}
-                  onChange={this._handleHomeUserChange}
-                  required
-                >
-                  <MenuItem value={'matt.mchatton@dialexa.com'}>Matt McHatton</MenuItem>
-                  <MenuItem value={'matt.tucker@dialexa.com'}>Matt Tucker</MenuItem>
-                  <MenuItem value={'brandon.harper@dialexa.com'}>Brandon Harper</MenuItem>
-                </Select>
-              </FormControl>
-              {/* <UserDropdown type="home"></UserDropdown> */}
+              <UserDropdown type="home"></UserDropdown>
               &nbsp;&nbsp;&nbsp;&nbsp;
-              {/* <UserDropdown type="away"></UserDropdown> */}
-              <FormControl sx={{ m: 1, minWidth: 160 }}>
-                <InputLabel id="away-user">Away Player</InputLabel>
-                <Select
-                  labelId="away-user-label"
-                  id="away-user"
-                  value={this.state.away_user}
-                  onChange={this._handleAwayUserChange}
-                  required
-                >
-                  <MenuItem value={'matt.mchatton@dialexa.com'}>Matt McHatton</MenuItem>
-                  <MenuItem value={'matt.tucker@dialexa.com'}>Matt Tucker</MenuItem>
-                  <MenuItem value={'brandon.harper@dialexa.com'}>Brandon Harper</MenuItem>
-                </Select>
-              </FormControl>
+              <UserDropdown type="away"></UserDropdown>
             <div>
               <TextField id="home-score-r1" label="Round 1 Home Score" variant="standard" required />
               &nbsp;&nbsp;&nbsp;&nbsp;
