@@ -1,5 +1,5 @@
 import React from 'react';
-//import * as dotenv from 'dotenv'
+import 'dotenv/config'
 import './App.css';
 import Button from '../node_modules/@mui/material/Button';
 import TextField from '../node_modules/@mui/material/TextField'

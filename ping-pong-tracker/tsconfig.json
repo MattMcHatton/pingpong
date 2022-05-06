@@ -9,14 +9,18 @@
         "allowJs": true,             // allow a partial TypeScript and JavaScript codebase
         "allowSyntheticDefaultImports": true, //allow default imports
         "skipLibCheck": true, //skip node_modules in compile
-        "moduleResolution": "node"
+        "moduleResolution": "node",
+        "types": [],
+        "strict": false
     },
     "include": [
         "src/**/*"
     ],
     "exclude": [
-        "node_modules/**/*",
-        "node_modules/knex/**/*",
+        "node_modules",
+        "./node_modules",
+        "./node_modules/*",
+        "./node_modules/@types/node/index.d.ts",
         "**/*.spec.ts"
     ]
 }
