@@ -15,15 +15,22 @@ class UserDropdown extends React.Component <{ type: String }, { type: String, ho
     }
 
     _handleHomeUserChange = (event: SelectChangeEvent) => {
-        console.log(event.target.value)
-        this.setState({home_user: event.target.value})
-        console.log(this.state.away_user)
-        return
+        if((event.target.value !== '') && (event.target.value === this.state.away_user)) {
+            console.log('Match')
+            return this.setState({home_user: ''})
+          }
+          console.log(this.state.away_user)
+          console.log(event.target.value)
+          console.log(event.target.value === this.state.home_user)
+          return this.setState({home_user: event.target.value})
       };
     
     _handleAwayUserChange = (event: SelectChangeEvent) => {
-        return this.setState({away_user: event.target.value})
-    };
+        if((event.target.value !== '') && (event.target.value === this.state.home_user)) {
+            return this.setState({away_user: ''})
+          }
+
+          return this.setState({away_user: event.target.value})    };
 
     render(){
         if(this.props.type === 'away'){
@@ -33,7 +40,7 @@ class UserDropdown extends React.Component <{ type: String }, { type: String, ho
                         <Select
                         labelId="away-user-label"
                         id="away-user"
-                        value={this.state.home_user}
+                        value={this.state.away_user}
                         onChange={this._handleAwayUserChange}
                         >
                             <MenuItem value={'matt.mchatton@dialexa.com'}>Matt McHatton</MenuItem>
@@ -49,7 +56,7 @@ class UserDropdown extends React.Component <{ type: String }, { type: String, ho
                     <Select
                     labelId="home-user-label"
                     id="home-user"
-                    value={this.state.away_user}
+                    value={this.state.home_user}
                     onChange={this._handleHomeUserChange}
                     >
                         <MenuItem value={'matt.mchatton@dialexa.com'}>Matt McHatton</MenuItem>

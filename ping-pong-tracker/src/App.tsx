@@ -4,7 +4,7 @@ import './App.css';
 import Button from '../node_modules/@mui/material/Button';
 import TextField from '../node_modules/@mui/material/TextField'
 import { Select, MenuItem, InputLabel, FormControl, SelectChangeEvent } from '@mui/material';
-//import UserDropdown from './components/UserDropdown';
+import UserDropdown from './components/UserDropdown';
 
 class App extends React.Component <{}, any> {
   
@@ -54,7 +54,7 @@ class App extends React.Component <{}, any> {
 
     let response: any = await fetch('/match', matchRequestOptions)
 
-    if (response.status != 201) {
+    if (response.status !== 201) {
       console.log('Error')
       return this.setState(this.default)
     }
@@ -141,14 +141,14 @@ class App extends React.Component <{}, any> {
   // }
 
   _handleHomeUserChange = (event: SelectChangeEvent) => {
-    if((event.target.value != '') && (event.target.value == this.state.away_user)) {
+    if((event.target.value !== '') && (event.target.value === this.state.away_user)) {
       return this.setState({home_user: ''})
     }
     return this.setState({home_user: event.target.value})
   };
 
   _handleAwayUserChange = (event: SelectChangeEvent) => {
-    if((event.target.value != '') && (event.target.value == this.state.home_user)) {
+    if((event.target.value !== '') && (event.target.value === this.state.home_user)) {
       return this.setState({away_user: ''})
     }
     return this.setState({away_user: event.target.value})
@@ -165,7 +165,7 @@ class App extends React.Component <{}, any> {
           {
             (this.state.recordMatch) &&
             <div>
-              <FormControl sx={{ m: 1, minWidth: 160 }}>
+              {/* <FormControl sx={{ m: 1, minWidth: 160 }}>
                 <InputLabel id="home-user">Home Player</InputLabel>
                 <Select
                   labelId="home-user-label"
@@ -178,11 +178,11 @@ class App extends React.Component <{}, any> {
                   <MenuItem value={'matt.tucker@dialexa.com'}>Matt Tucker</MenuItem>
                   <MenuItem value={'brandon.harper@dialexa.com'}>Brandon Harper</MenuItem>
                 </Select>
-              </FormControl>
-              {/* <UserDropdown type="home"></UserDropdown> */}
+              </FormControl> */}
+              <UserDropdown type="home"></UserDropdown>
               &nbsp;&nbsp;&nbsp;&nbsp;
-              {/* <UserDropdown type="away"></UserDropdown> */}
-              <FormControl sx={{ m: 1, minWidth: 160 }}>
+              <UserDropdown type="away"></UserDropdown>
+              {/* <FormControl sx={{ m: 1, minWidth: 160 }}>
                 <InputLabel id="away-user">Away Player</InputLabel>
                 <Select
                   labelId="away-user-label"
@@ -195,7 +195,7 @@ class App extends React.Component <{}, any> {
                   <MenuItem value={'matt.tucker@dialexa.com'}>Matt Tucker</MenuItem>
                   <MenuItem value={'brandon.harper@dialexa.com'}>Brandon Harper</MenuItem>
                 </Select>
-              </FormControl>
+              </FormControl> */}
             <div>
               <TextField id="home-score-r1" label="Round 1 Home Score" variant="standard" required />
               &nbsp;&nbsp;&nbsp;&nbsp;
