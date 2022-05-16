@@ -179,9 +179,7 @@ class App extends React.Component <{}, any> {
                   <MenuItem value={'brandon.harper@dialexa.com'}>Brandon Harper</MenuItem>
                 </Select>
               </FormControl> */}
-              <UserDropdown type="home"></UserDropdown>
-              &nbsp;&nbsp;&nbsp;&nbsp;
-              <UserDropdown type="away"></UserDropdown>
+              <UserDropdown></UserDropdown>
               {/* <FormControl sx={{ m: 1, minWidth: 160 }}>
                 <InputLabel id="away-user">Away Player</InputLabel>
                 <Select
